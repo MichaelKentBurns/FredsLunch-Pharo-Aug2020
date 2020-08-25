@@ -124,6 +124,7 @@ FredsLunchLunchData >> gatherColumns [
 					  
 					].
 		].
+	"stop to peek at the results."
    self halt.
 	debug ifTrue: [ Transcript show: 'Data: end   gatherDataColumns'; cr. ].
 ]
