@@ -27,3 +27,13 @@ FredsLunchMemberList >> addMember: aMember [
 FredsLunchMemberList >> initialize [ 
 	members := OrderedCollection new.
 ]
+
+{ #category : #accessing }
+FredsLunchMemberList >> main [ 
+	^main
+]
+
+{ #category : #accessing }
+FredsLunchMemberList >> members [ 
+	^members
+]

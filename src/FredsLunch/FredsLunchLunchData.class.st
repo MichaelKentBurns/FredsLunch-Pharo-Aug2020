@@ -38,7 +38,8 @@ Class {
 		'secondBlankColumnNumber',
 		'rowBalanceColumnNumber',
 		'firstMemberColumnNumber',
-		'lastMemberColumnNumber'
+		'lastMemberColumnNumber',
+		'dataTypes'
 	],
 	#category : #FredsLunch
 }
@@ -88,7 +89,7 @@ FredsLunchLunchData >> filePathname: aPath [
 
 { #category : #'as yet unclassified' }
 FredsLunchLunchData >> gatherColumns [
-	| columnNumber newColumn newMember |
+	| columnNumber newColumn newMember memberNumber |
 	debug ifTrue: [ Transcript show: 'Data: begin gatherColumns'; cr. ].
 	columnNames := csv rows at: 1.
 	columnNumber := 0.
@@ -100,6 +101,7 @@ FredsLunchLunchData >> gatherColumns [
 	columnNames do: 
 		[ :each | 
 		  columnNumber := columnNumber + 1.
+		  newMember := nil. 
 		  newColumn := FredsLunchDataColumn new.
 		  columns add: newColumn.
 		  newColumn debug: debug; columnNumber: columnNumber; name: each .
@@ -109,23 +111,58 @@ FredsLunchLunchData >> gatherColumns [
 		  Transcript show: 'columnNumber ',(columnNumber asString), ': ', ( each asString ), '.'; cr .
 	
 		  (each isString & (each = 'Date')) ifTrue: [dateColumnNumber := columnNumber.
-																newColumn isSpecial: true.].
+																		newColumn isSpecial: true;
+																          		dataType: dataTypes date ].
 	     (each isString & (each = 'DateText')) ifTrue: [ dateTextColumnNumber := columnNumber. 
-																newColumn isSpecial: true. ].
-		  (each isString & (each = 'RowBalance')) ifTrue: [rowBalanceColumnNumber := columnNumber.
-																newColumn isSpecial: true. ].
+																			newColumn isSpecial: true;
+																						 dataType: dataTypes string ].
+		  (each isString & (each = 'RowBalance')) ifTrue: [ rowBalanceColumnNumber := columnNumber.
+																			newColumn isSpecial: true;
+																						 dataType: dataTypes float ].
 							
-		  ( each isEmpty ) 
+		  ( each isEmpty )
+				ifTrue: 
+					[ newColumn isIgnored: true.
+					 ]
 				ifFalse: 
-					[ newColumn isMember: true.
-					  newMember := FredsLunchMember new.
-					  newMember name: each.
-					  memberList addMember: newMember.
+					[ 
+						(newMember isNil ) ifFalse:
+						[  
+						(newMember isSpecial)
+					     ifFalse: 
+							[
+								newColumn isMember: true.
+					  			newMember := FredsLunchMember new.
+								memberList addMember: newMember.
+							]
+						]
 					  
 					].
 		].
-	"stop to peek at the results."
-   self halt.
+	"peek at the results."
+	
+	debug ifTrue: 
+		[ 
+		 " dump the data types defined."
+     	( dataTypes typesStart to: dataTypes typesEnd )
+		 do: [ :n | 
+	            Transcript show: 'dataType #',n asString, ' is named ', ( dataTypes numbered: n) asString; cr.
+	 			].
+		  self halt.	
+		" dump the columns defined."	
+		columns do:
+		    [ :each |
+			   Transcript show: 'column #', (each columnNumber asString) , ' is named ', each name ; cr. 
+			 ]
+		 ].
+	   " dump the known group members."
+	   memberNumber := 0.
+		memberList members do: 
+		    [ :each | 
+			   memberNumber := memberNumber + 1.
+				Transcript show: 'member #', (memberNumber asString) , ' is named ', each name ; cr.
+			 ].
+		self halt.
 	debug ifTrue: [ Transcript show: 'Data: end   gatherDataColumns'; cr. ].
 ]
 
@@ -180,6 +217,7 @@ FredsLunchLunchData >> initialize [
 	columns := OrderedCollection new.
 	memberList := FredsLunchMemberList new.
 	lunchList := FredsLunchLunchList new.
+	dataTypes := FredsLunchDataType new.
 ]
 
 { #category : #accessing }

@@ -11,6 +11,7 @@ Class {
 		'dataType',
 		'isSpecial',
 		'isMember',
+		'isIgnored',
 		'columnBalance'
 	],
 	#category : #FredsLunch
@@ -39,6 +40,18 @@ FredsLunchDataColumn >> columnNumber: anInt [
 ]
 
 { #category : #accessing }
+FredsLunchDataColumn >> dataType [ 
+	^dataType
+	
+]
+
+{ #category : #accessing }
+FredsLunchDataColumn >> dataType: aType [
+	| |
+	dataType := aType
+]
+
+{ #category : #accessing }
 FredsLunchDataColumn >> debug: aBoolean [
 | |
 debug:= aBoolean.
@@ -52,7 +65,23 @@ FredsLunchDataColumn >> initialize [
 	dataType := 0.
 	isSpecial := false.
 	isMember := false.
+	isIgnored := false.
 	columnBalance := 0.0.
+]
+
+{ #category : #accessing }
+FredsLunchDataColumn >> isIgnored [
+	^isIgnored
+]
+
+{ #category : #accessing }
+FredsLunchDataColumn >> isIgnored: aBoolean [
+	isIgnored := aBoolean.
+]
+
+{ #category : #accessing }
+FredsLunchDataColumn >> isMember [ 
+	^isMember
 ]
 
 { #category : #accessing }
@@ -61,8 +90,19 @@ FredsLunchDataColumn >> isMember: aBoolean [
 ]
 
 { #category : #accessing }
+FredsLunchDataColumn >> isSpecial [ 
+	^isSpecial
+	
+]
+
+{ #category : #accessing }
 FredsLunchDataColumn >> isSpecial: aBoolean [
 	isSpecial := aBoolean.
+]
+
+{ #category : #accessing }
+FredsLunchDataColumn >> name [ 
+	^name
 ]
 
 { #category : #accessing }
