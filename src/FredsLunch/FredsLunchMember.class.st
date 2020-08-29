@@ -17,7 +17,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'main',
-		'name'
+		'name',
+		'memberNumber'
 	],
 	#category : #FredsLunch
 }
@@ -25,6 +26,22 @@ Class {
 { #category : #accessing }
 FredsLunchMember >> main: anObject [
 	main := anObject.
+]
+
+{ #category : #accessing }
+FredsLunchMember >> memberNumber [
+	^memberNumber
+]
+
+{ #category : #accessing }
+FredsLunchMember >> memberNumber: anInt [ 
+	memberNumber := anInt
+]
+
+{ #category : #accessing }
+FredsLunchMember >> name [ 
+	^name
+	
 ]
 
 { #category : #accessing }

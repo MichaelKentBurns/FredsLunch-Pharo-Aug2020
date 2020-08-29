@@ -39,7 +39,8 @@ Class {
 		'accountName',
 		'data',
 		'filePathname',
-		'debug'
+		'debug',
+		'viewer'
 	],
 	#classInstVars : [
 		'arguments',

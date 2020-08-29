@@ -69,6 +69,12 @@ FredsLunchLunchData >> checkBalances [
 ]
 
 { #category : #accessing }
+FredsLunchLunchData >> csv [
+	^csv
+	
+]
+
+{ #category : #accessing }
 FredsLunchLunchData >> debug [ 
 	| |
 	^debug.
@@ -97,6 +103,7 @@ FredsLunchLunchData >> gatherColumns [
 	rowBalanceColumnNumber := 0.
 	firstMemberColumnNumber := 0.
 	lastMemberColumnNumber := 0. 
+	memberNumber := 0.
 	
 	columnNames do: 
 		[ :each | 
@@ -126,20 +133,19 @@ FredsLunchLunchData >> gatherColumns [
 					 ]
 				ifFalse: 
 					[ 
-						(newMember isNil ) ifFalse:
-						[  
-						(newMember isSpecial)
+						(newColumn isSpecial)
 					     ifFalse: 
 							[
+							   memberNumber := memberNumber + 1.
 								newColumn isMember: true.
-					  			newMember := FredsLunchMember new.
+								newMember := FredsLunchMember new.
+								newMember main: main; memberNumber: memberNumber; name: each.
 								memberList addMember: newMember.
 							]
-						]
+						
 					  
 					].
 		].
-	"peek at the results."
 	
 	debug ifTrue: 
 		[ 
@@ -148,7 +154,6 @@ FredsLunchLunchData >> gatherColumns [
 		 do: [ :n | 
 	            Transcript show: 'dataType #',n asString, ' is named ', ( dataTypes numbered: n) asString; cr.
 	 			].
-		  self halt.	
 		" dump the columns defined."	
 		columns do:
 		    [ :each |
@@ -160,10 +165,9 @@ FredsLunchLunchData >> gatherColumns [
 		memberList members do: 
 		    [ :each | 
 			   memberNumber := memberNumber + 1.
-				Transcript show: 'member #', (memberNumber asString) , ' is named ', each name ; cr.
+				Transcript show: 'member #', (each memberNumber asString) , ' is named ', each name ; cr.
 			 ].
-		self halt.
-	debug ifTrue: [ Transcript show: 'Data: end   gatherDataColumns'; cr. ].
+	debug ifTrue: [ Transcript show: 'Data: end   gatherColumns'; cr. ].
 ]
 
 { #category : #'as yet unclassified' }
